@@ -13,11 +13,17 @@ namespace CreditApplications.Controllers
     public class CreditApplicationController : ControllerBase
     {
         private IConfiguration _Config;
-        private CreditApprovalRules _CreditApprovalRules;
+        private CreditApprovalRules _CreditApprovalRules = new CreditApprovalRules();
 
         public CreditApplicationController(IConfiguration Configuration)
         {
             _Config = Configuration;
+            //For simplicity, we read approval rules from config
+            _Config.GetSection("ApprovalCriteria").Bind(_CreditApprovalRules);
+            if (_CreditApprovalRules.CurrentInterestRates == null)
+            {
+                throw new MissingFieldException("Could not read approval rules from configuration.");
+            }
         }
 
         [HttpGet("version")]
