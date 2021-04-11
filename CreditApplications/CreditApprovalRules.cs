@@ -11,20 +11,43 @@ namespace CreditApplications
         public double MaxLoanAmount { get; set; }
         public Dictionary<string, string> CurrentInterestRates { get; set; }
 
-        private SortedDictionary<double, double> _CurrentInterestRatesParsed = new SortedDictionary<double, double>();
+        public bool IsLoanAmountWithinBounds(double loanAmount)
+        {
+            return (MinLoanAmount <= loanAmount) && loanAmount <= MaxLoanAmount;
+        }
 
-        public SortedDictionary<double, double> GetCurrentInterestRates()
+        public double CalculateRateForAmount(double loanAmount)
         {
             if (CurrentInterestRates == null)
             {
-                return null;
+                return 0;
             }
-            foreach (KeyValuePair<string, string> rate in CurrentInterestRates)
+            double amountLowBound = 0;
+            double interestRate = 0;
+
+            var interestRates = new SortedDictionary<double, double>();
+
+            foreach (var rate in CurrentInterestRates)
             {
-                _CurrentInterestRatesParsed.Add(double.Parse(rate.Key), double.Parse(rate.Value));
+                interestRates.Add(double.Parse(rate.Key), double.Parse(rate.Value));
             }
-            return _CurrentInterestRatesParsed;
+
+            foreach (var amountLimit in interestRates)
+            {
+                if (amountLowBound < loanAmount && loanAmount < amountLimit.Key)
+                {
+                    interestRate = amountLimit.Value;
+                    break;
+                }
+                else
+                {
+                    amountLowBound = amountLimit.Key;
+                }
+            }
+            return interestRate;
         }
+
+
     }
 
 }
