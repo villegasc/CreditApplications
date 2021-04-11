@@ -9,19 +9,14 @@ namespace CreditApplications
     {
         public bool IsApproved { get; set; }
         public double InterestRate { get; set; }
-        private CreditApplication _CApplication { get; set; }
-        private CreditApprovalRules _CApprovalRules { get; set; }
 
         public CreditDecision(CreditApplication cApplication, CreditApprovalRules aRules) 
         {
-            _CApplication = cApplication;
-            _CApprovalRules = aRules;
-            ProcessRequest();
-        }
-
-        private void ProcessRequest()
-        {
-            throw new NotImplementedException();
+            if (cApplication.GetType().GetProperties().All(p => p.GetValue(cApplication) != null))
+            {
+                IsApproved = aRules.IsLoanAmountWithinBounds(cApplication.RequestedAmount);
+                InterestRate = aRules.CalculateRateForAmount(cApplication.RequestedAmount + cApplication.CurrentAmount);
+            }
         }
     }
 }
