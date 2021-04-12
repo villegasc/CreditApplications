@@ -1,25 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace CreditApplications
 {
     public class CreditDecision
     {
         [JsonPropertyName("Approved")]
-        public bool IsApproved { get; set; }
+        public bool IsApproved { get; set; } = false;
 
         [JsonPropertyName("InterestRate")]
-        public double InterestRate { get; set; }
+        public double InterestRate { get; set; } = 0;
 
         public CreditDecision(CreditApplication cApplication, CreditApprovalRules aRules)
         {
             if (cApplication.GetType().GetProperties().All(p => p.GetValue(cApplication) != null))
             {
-                var requestedAmount = (double)cApplication.RequestedAmount;
-                var totalDebt = (double)(cApplication.RequestedAmount 
+                double requestedAmount = (double)cApplication.RequestedAmount;
+                double totalDebt = (double)(cApplication.RequestedAmount 
                                                 + cApplication.CurrentAmount);
 
                 IsApproved = aRules.IsLoanAmountWithinBounds(requestedAmount);

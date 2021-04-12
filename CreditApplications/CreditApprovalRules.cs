@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace CreditApplications
 {
@@ -9,6 +6,9 @@ namespace CreditApplications
     {
         public double MinLoanAmount { get; set; }
         public double MaxLoanAmount { get; set; }
+
+        // KV pairs represent (minimun_total_debt, interest_rate)
+        // better with a separate class for clarity but kept as-is for simplicity
         public Dictionary<string, string> CurrentInterestRates { get; set; }
 
         public bool IsLoanAmountWithinBounds(double loanAmount)
@@ -16,7 +16,7 @@ namespace CreditApplications
             return (MinLoanAmount <= loanAmount) && loanAmount <= MaxLoanAmount;
         }
 
-        public double CalculateRateForAmount(double loanAmount)
+        public double CalculateRateForAmount(double totalDebt)
         {
             if (CurrentInterestRates == null)
             {
@@ -25,16 +25,16 @@ namespace CreditApplications
             double amountLowBound = 0;
             double interestRate = 0;
 
-            var interestRates = new SortedDictionary<double, double>();
+            SortedDictionary<double, double> interestRates = new SortedDictionary<double, double>();
 
-            foreach (var rate in CurrentInterestRates)
+            foreach (KeyValuePair<string, string> rate in CurrentInterestRates)
             {
                 interestRates.Add(double.Parse(rate.Key), double.Parse(rate.Value));
             }
 
-            foreach (var amountLimit in interestRates)
+            foreach (KeyValuePair<double, double> amountLimit in interestRates)
             {
-                if (amountLowBound < loanAmount && loanAmount < amountLimit.Key)
+                if (amountLowBound <= totalDebt && totalDebt < amountLimit.Key)
                 {
                     interestRate = amountLimit.Value;
                     break;
@@ -46,8 +46,5 @@ namespace CreditApplications
             }
             return interestRate;
         }
-
-
     }
-
 }

@@ -1,10 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Configuration;
 
 namespace CreditApplications.Controllers
 {
@@ -24,7 +21,7 @@ namespace CreditApplications.Controllers
 
             if (_CreditApprovalRules.CurrentInterestRates == null)
             {
-                throw new MissingFieldException("Could not read approval rules from configuration.");
+                throw new ConfigurationErrorsException("Could not read approval rules from configuration.");
             }
         }
 
