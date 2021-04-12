@@ -26,3 +26,17 @@ The service returns a decision and an interest rate percentage, based on the fol
 |  Up to 40000		|		4		 |
 |  Up to 60000		|		5		 |
 |  Over 60000		|		6		 |
+
+--------------
+Request Body:  
+**{
+	"CurrentAmount": 8000.5,
+	"RequestedAmount": 2000,
+  "RepaymentTerm": 11
+}**
+
+Response:  
+**{
+	"Approved": True,
+	"InterestRate": 3
+}**
