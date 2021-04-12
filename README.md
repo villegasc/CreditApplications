@@ -16,7 +16,6 @@ The service returns a decision and an interest rate percentage, based on the fol
 | <2000			  | No			|
 | >2000			  | Yes			|
 | >69000		  | No			|
-###### NOTE: Fixed to include all possible amounts. Original task left range of values out.
 
 ## Interest Rate
 
@@ -27,6 +26,7 @@ The service returns a decision and an interest rate percentage, based on the fol
 |  Up to 60000		|		5		 |
 |  Over 60000		|		6		 |
 
+###### NOTE: Fixed to include all possible amounts. Original task left range of values out.
 --------------
 Request Body:  
 **{
